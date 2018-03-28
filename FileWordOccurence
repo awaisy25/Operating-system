@@ -1,0 +1,60 @@
+# Operating-system
+//Reads a text file and counts the occurences for each word 
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
+
+public class WordOccurence {
+	public static void main(String args[]) throws IOException{
+	//Putting the words into a HashMap
+		HashMap<String, Integer> Map = new HashMap<String, Integer>();
+	//enter file here 
+		Scanner textFile = new Scanner(new File(""));
+	/*This is a loop that goes through the text. Puts the word into the hashmap and counts the value
+		if it occurs more than once*/
+		while(textFile.hasNext()){
+			String word = textFile.next();
+			if (Map.containsKey(word)){
+				int count = Map.get(word) + 1;
+				Map.put(word, count);
+			}
+			else{
+				Map.put(word, 1);
+			}
+		}
+		textFile.close();
+		/*This compares the values and sorts them through descending order by making each
+		  value pair an object in an array*/
+		 Object[] Occur = Map.entrySet().toArray();
+		 Arrays.sort(Occur, new Comparator<Object>(){
+			 public int compare(Object One, Object Two){
+				 return ((Map.Entry<String, Integer>) Two).getValue().compareTo(((Map.Entry<String, Integer>) One).getValue());
+			 }
+		});
+		 //Directory to put in the new file
+		 FileWriter fw = new FileWriter("newFile.txt");
+		 BufferedWriter bw = new BufferedWriter(fw);
+		 for (Object x: Occur){
+			 Map.Entry<String, Integer> x3 = (Map.Entry<String, Integer>) x;
+			Entry<String, Integer> entry = x3;
+			System.out.println(entry.getKey() + ": "
+			            + entry.getValue());
+			String Word = entry.getKey();
+			String Value = String.valueOf(entry.getValue());
+			String Line = Word + ": " + Value;
+			bw.newLine();
+			bw.write(Line);
+
+		 }
+		 bw.close();
+}
+}
